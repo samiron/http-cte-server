@@ -1,5 +1,6 @@
 package of.cgi.assignment.kernel;
 
+import of.cgi.assignment.http.exception.HttpException;
 import of.cgi.assignment.http.exception.NotFoundException;
 import of.cgi.assignment.http.request.HttpRequest;
 import of.cgi.assignment.services.Service;
@@ -38,17 +39,17 @@ public class Router {
 		}
 	}
 
-	public ServiceHandler<Service> getHandler(HttpRequest request) throws NoSuchMethodException, NotFoundException {
-		String path = request.getPath();
-		String[] partParts = path.split("/");
-		String firstPart = partParts[0];
-		if(firstPart.isEmpty()){
-			firstPart = "web";
+	public ServiceHandler<Service> getHandler(HttpRequest request) throws NoSuchMethodException, HttpException {
+		String fullPath = request.getPath();
+		String[] partParts = fullPath.split("/", 3);
+		String prefix = partParts[1];
+
+		Service serviceClass = routes.get(prefix);
+		if (serviceClass == null) {
+			throw new NotFoundException("Invalid path");
 		}
 
-		Service serviceClass = routes.get(firstPart);
-		Method method;
-		method = serviceClass.getClass().getMethod("serve", HttpRequest.class);
+		Method method = serviceClass.getClass().getMethod("serve", HttpRequest.class);
 		return new ServiceHandler<>(serviceClass, method);
 	}
 
