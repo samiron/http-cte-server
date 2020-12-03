@@ -19,7 +19,7 @@ public class Table {
 
 	public String toHtml() {
 		StringBuilder tableBuilder = new StringBuilder();
-		tableBuilder.append("<table>");
+		tableBuilder.append("<table align=\"center\" border=\"1\">");
 
 		// Add table header
 		tableBuilder.append("<tr>");
