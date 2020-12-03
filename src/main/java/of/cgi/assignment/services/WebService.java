@@ -3,11 +3,10 @@ package of.cgi.assignment.services;
 import of.cgi.assignment.http.ContentType;
 import of.cgi.assignment.http.ResponseCode;
 import of.cgi.assignment.http.exception.HttpException;
-import of.cgi.assignment.http.exception.NotFoundException;
 import of.cgi.assignment.http.request.HttpRequest;
 import of.cgi.assignment.http.response.HttpResponse;
 import of.cgi.assignment.http.response.HttpResponseBuilder;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+import of.cgi.assignment.services.pojo.FormData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +18,11 @@ public class WebService extends HttpService {
 	private static final String WEBROOT = "./webroot";
 
 	@Override
-	public HttpResponse doGet(HttpRequest request) throws HttpException {
+	public HttpResponse doGet(HttpRequest request) {
 
 		logger.info("Requested for: " + request.getPath());
-		File f = new File( WEBROOT + request.getPath());
+		String path = request.getPath().replaceFirst("web", "");
+		File f = new File(WEBROOT + path);
 
 		return new HttpResponseBuilder()
 				.responseCode(ResponseCode.OK)
@@ -35,6 +35,26 @@ public class WebService extends HttpService {
 
 	@Override
 	public HttpResponse doPost(HttpRequest request) {
-		return null;
+		FormData formData = new FormData(request.getRequestBody());
+		String firstName = formData.getFieldValue("first_name");
+		String lastName = formData.getFieldValue("last_name");
+
+		String response = "<!DOCTYPE html>\n" +
+				"<html>\n" +
+				"<head>\n" +
+				"    <title>Pauls Web Server</title>\n" +
+				"</head>" +
+				"<body>" +
+				"<h1>\n" +
+				"    Hi " + firstName + " " + lastName +
+				"</h1>" +
+				"</body>" +
+				"</html>";
+
+		return new HttpResponseBuilder()
+				.responseCode(ResponseCode.OK)
+				.contentType(ContentType.HTML)
+				.body(response)
+				.build();
 	}
 }
