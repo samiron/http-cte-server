@@ -6,7 +6,8 @@ import java.util.List;
 
 public enum ContentType{
 	HTML("text/html"),
-	TXT("text/plain");
+	TXT("text/plain"),
+	URL_ENCODED("application/x-www-form-urlencoded");
 
 	private final String mimeType;
 
