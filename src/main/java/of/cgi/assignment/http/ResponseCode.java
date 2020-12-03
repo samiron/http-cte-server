@@ -11,7 +11,8 @@ public enum ResponseCode {
 	UNSUPPORTED_MEDIA_TYPE("415 Unsupported Media Type"),
 
 	//5xx,
-	INTERNAL_SERVER_ERROR("500 Internal Server Error");
+	INTERNAL_SERVER_ERROR("500 Internal Server Error"),
+	NOT_IMPLEMENTED("501 Not implemented");
 
 	private final String response;
 
