@@ -3,7 +3,6 @@ package of.cgi.assignment.services;
 import of.cgi.assignment.http.ContentType;
 import of.cgi.assignment.http.ResponseCode;
 import of.cgi.assignment.http.exception.BadRequestException;
-import of.cgi.assignment.http.exception.HttpException;
 import of.cgi.assignment.http.request.HttpRequest;
 import of.cgi.assignment.http.response.HttpResponse;
 import of.cgi.assignment.http.response.HttpResponseBuilder;
@@ -12,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class WebService extends HttpService {
 
@@ -26,9 +28,16 @@ public class WebService extends HttpService {
 		String path = request.getPath().replaceFirst("web", "");
 		File f = new File(WEBROOT + path);
 
+		String mimeType = null;
+		try {
+			mimeType = Files.probeContentType(Paths.get(f.getPath()));
+		} catch (IOException | SecurityException e) {
+			e.printStackTrace();
+		}
+
 		return new HttpResponseBuilder()
 				.responseCode(ResponseCode.OK)
-				.contentType(ContentType.HTML)
+				.contentType(mimeType)
 				.body(f)
 				.addHeader("X-Samiron: Random Header")
 				.build();
