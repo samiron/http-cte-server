@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FileStreamResponse extends BasicHttpResponse {
 
-	FileStreamResponse(Serializable body, ContentType contentType, ResponseCode responseCode, List<String> headers) {
+	FileStreamResponse(Serializable body, String contentType, ResponseCode responseCode, List<String> headers) {
 		super(body, contentType, responseCode, headers);
 	}
 

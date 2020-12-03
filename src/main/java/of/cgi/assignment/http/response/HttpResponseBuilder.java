@@ -11,7 +11,7 @@ import java.util.List;
 
 public class HttpResponseBuilder {
 	private Serializable body;
-	private ContentType contentType;
+	private String contentType;
 	private ResponseCode responseCode;
 	private List<String> headers;
 	private HttpRequest httpRequest;
@@ -27,6 +27,11 @@ public class HttpResponseBuilder {
 	}
 
 	public HttpResponseBuilder contentType(ContentType contentType) {
+		this.contentType = contentType.toString();
+		return this;
+	}
+
+	public HttpResponseBuilder contentType(String contentType){
 		this.contentType = contentType;
 		return this;
 	}

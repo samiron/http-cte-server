@@ -13,13 +13,13 @@ public class BasicHttpResponse implements HttpResponse {
 
 	private final Serializable body;
 
-	private final ContentType contentType;
+	private final String contentType;
 	private final ResponseCode responseCode;
 	private final List<String> headers;
 	private final String lineSeparator = "\r\n";
 	private final int chunkSize;
 
-	BasicHttpResponse(Serializable body, ContentType contentType, ResponseCode responseCode, List<String> headers) {
+	BasicHttpResponse(Serializable body, String contentType, ResponseCode responseCode, List<String> headers) {
 		this.body = body;
 		this.contentType = contentType;
 		this.responseCode = responseCode;
