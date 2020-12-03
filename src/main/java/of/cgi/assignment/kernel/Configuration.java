@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unchecked")
 public class Configuration {
@@ -16,8 +17,8 @@ public class Configuration {
 	private final static String APP_CONFIG_FILE;
 	private final static String LOG_CONFIG_FILE;
 
-	private final static Map<String, String> routes = new HashMap<>();
-	private final static Map<String, String> directories = new HashMap<>();
+	private final static Map<String, String> routes = new ConcurrentHashMap<>();
+	private final static Map<String, String> directories = new ConcurrentHashMap<>();
 
 	static {
 		String propertyDirectory = Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("")).getPath();
