@@ -2,6 +2,7 @@ package of.cgi.assignment.http.request;
 
 import of.cgi.assignment.http.exception.BadRequestException;
 import of.cgi.assignment.http.exception.HttpException;
+import of.cgi.assignment.http.exception.MethodNotAllowedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,11 +56,12 @@ public class HttpRequestBuilder implements RequestBuilder {
 		if (tokens.length != 3) {
 			throw new BadRequestException("Malformed Start Line: " + requestLine);
 		}
-		String method = tokens[0];
+		String method = tokens[0].trim();
 		String url = tokens[1];
 		String httpVersion = tokens[2];
-		httpRequest = createRequest(method.trim());
+		httpRequest = createRequest(method);
 		httpRequest.setHttpVersion(httpVersion.trim());
+		httpRequest.setHttpMethod(method);
 		try {
 			httpRequest.setUrl(url.trim());
 		} catch (MalformedURLException | URISyntaxException e) {
@@ -79,7 +81,7 @@ public class HttpRequestBuilder implements RequestBuilder {
 			case "POST":
 				return new PostRequest();
 			default:
-				throw new BadRequestException("Invalid request method: " + method);
+				throw new MethodNotAllowedException("Invalid request method: " + method);
 		}
 	}
 }

@@ -21,7 +21,7 @@ class BasicHttpRequest implements HttpRequest {
 	private String body = "";
 	private String httpVersion = "";
 
-	private final HttpMethod httpMethod;
+	private HttpMethod httpMethod;
 	private final Map<String, String> queryParams = new HashMap<>();
 	private final List<ContentType> accepts = new ArrayList<>();
 	private final Map<String, String> headers = new HashMap<>();
@@ -36,6 +36,11 @@ class BasicHttpRequest implements HttpRequest {
 	@Override
 	public Integer getContentLength() {
 		return this.contentLength;
+	}
+
+	@Override
+	public HttpMethod getMethod() {
+		return this.httpMethod;
 	}
 
 	@Override
@@ -112,6 +117,10 @@ class BasicHttpRequest implements HttpRequest {
 
 	void setRequestBody(String body) {
 		this.body = body;
+	}
+
+	public void setHttpMethod(String method) {
+		this.httpMethod = HttpMethod.valueOf(method);
 	}
 
 	void addHeader(String headerName, String headerValue) throws HttpException {
