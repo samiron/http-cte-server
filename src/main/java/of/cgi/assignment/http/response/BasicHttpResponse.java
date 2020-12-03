@@ -34,12 +34,11 @@ public class BasicHttpResponse implements HttpResponse {
 	@Override
 	public void flush(OutputStream outputStream) throws HttpException {
 		PrintStream out = new PrintStream(new BufferedOutputStream(outputStream));
+		InputStream in = prepareBody(out);
 
 		// Flush the headers first
 		fillInHeaders(out);
 		flush(out);
-
-		InputStream in = prepareBody(out);
 		sendBody(in, out);
 	}
 
@@ -52,7 +51,7 @@ public class BasicHttpResponse implements HttpResponse {
 
 	protected void sendBody(InputStream in, PrintStream printOut) throws InternalServerException {
 		int position = 0;
-		int nBytes = 0;
+		int nBytes;
 
 		byte[] bytes = new byte[chunkSize];
 		try {
