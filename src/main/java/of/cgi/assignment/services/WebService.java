@@ -2,6 +2,7 @@ package of.cgi.assignment.services;
 
 import of.cgi.assignment.http.ContentType;
 import of.cgi.assignment.http.ResponseCode;
+import of.cgi.assignment.http.exception.BadRequestException;
 import of.cgi.assignment.http.exception.HttpException;
 import of.cgi.assignment.http.request.HttpRequest;
 import of.cgi.assignment.http.response.HttpResponse;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 public class WebService extends HttpService {
 
@@ -34,8 +36,8 @@ public class WebService extends HttpService {
 	}
 
 	@Override
-	public HttpResponse doPost(HttpRequest request) {
-		FormData formData = new FormData(request.getRequestBody());
+	public HttpResponse doPost(HttpRequest request) throws BadRequestException {
+		FormData formData = getFormData(request);
 		String firstName = formData.getFieldValue("first_name");
 		String lastName = formData.getFieldValue("last_name");
 
@@ -56,5 +58,15 @@ public class WebService extends HttpService {
 				.contentType(ContentType.HTML)
 				.body(response)
 				.build();
+	}
+
+	private FormData getFormData(HttpRequest request) throws BadRequestException {
+		FormData formData;
+		try {
+			formData = new FormData(request.getRequestBody());
+		} catch (UnsupportedEncodingException e) {
+			throw new BadRequestException("Failed parse data");
+		}
+		return formData;
 	}
 }
