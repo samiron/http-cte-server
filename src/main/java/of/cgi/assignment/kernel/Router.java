@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Router {
 	private static final Router router = new Router();
 
-	private final Map<String, String> directories = new ConcurrentHashMap<>();
 	private final Map<String, Service> routes = new ConcurrentHashMap<>();
 
 	private Router() {
@@ -31,8 +30,6 @@ public class Router {
 				throw new RuntimeException("Failed to initialize route", e);
 			}
 		}
-
-		this.directories.putAll(Configuration.get().getDirectories());
 	}
 
 	public static Router get() {
