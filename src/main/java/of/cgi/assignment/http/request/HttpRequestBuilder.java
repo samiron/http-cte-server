@@ -30,8 +30,16 @@ public class HttpRequestBuilder implements RequestBuilder {
 			nextLine = reader.readLine();
 		}
 
-		//TODO: Parse and set body for post request
-
+		StringBuilder bodyBuilder = new StringBuilder();
+		if (reader.ready()) {
+			int c  = reader.read();
+			while (c != -1) {
+				bodyBuilder.append((char) c);
+				if(!reader.ready()) break;
+				c  = reader.read();
+			}
+		}
+		this.httpRequest.setRequestBody(bodyBuilder.toString());
 	}
 
 	private void headerLine(String headerLine) throws HttpException {
