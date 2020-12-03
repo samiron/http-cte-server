@@ -72,14 +72,6 @@ public class HttpRequestBuilder implements RequestBuilder {
 		return httpRequest;
 	}
 
-	public HttpRequestBuilder nextHeader(String nextLine) {
-		return this;
-	}
-
-	public HttpRequestBuilder body(String body) {
-		return this;
-	}
-
 	private BasicHttpRequest createRequest(String method) throws HttpException {
 		switch (method.toUpperCase()) {
 			case "GET":
