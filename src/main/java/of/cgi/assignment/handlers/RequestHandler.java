@@ -32,7 +32,6 @@ public class RequestHandler implements Runnable {
 			RequestBuilder requestBuilder = new HttpRequestBuilder(inputStream);
 
 			HttpRequest request = requestBuilder.build();
-			System.out.println(request);
 
 			ServiceHandler<Service> handler = Router.get().getHandler(request);
 			HttpResponse response = handler.invoke(request);
